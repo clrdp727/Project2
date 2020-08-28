@@ -60,7 +60,7 @@ node {
             def isValidation = bat (returnStdout: true, script: "git name-rev --name-only HEAD").trim().readLines().drop(1)
             println "-->>>>isValidation-->>>"+isValidation
             if(isValidation!=''){
-                getBranches = isValidation.split('/')
+                getBranches = isValidation[0].split('/')
                  for(int  index=0; index<getBranches.size();i++){
                      println "Branch-->>"+getBranches[index]
                     if(getBranches[index]==CheckOnlyBranches){
