@@ -3,7 +3,9 @@ import groovy.json.JsonSlurperClassic
 
     def getFolderName() {
         def array = pwd().split("/")
-        return array[array.length - 2];
+        def folderNameList = array[array.length - 2].split('\\\\')
+        def projectFolderName = folderNameList[folderNameList.size()-1].split('@')[0]
+        return projectFolderName;
     }
 
 node {
@@ -12,24 +14,21 @@ node {
     def RUN_ARTIFACT_DIR="tests/${BUILD_NUMBER}"
     def SFDC_USERNAME
 
-    def folderPath = getFolderName()
+    def projectFolderName1 = getFolderName()
     print "Folder Name"
     print "${folderPath}"
-    def folderNameList = "${folderPath}".split('\\\\')
-    def projectFolderName = folderNameList[folderNameList.size()-1].split('@')[0]
-    print "${projectFolderName}"
+    print "${projectFolderName1}"
     print "Getting Environment Variable Details-----"
     
     def CheckOnlyBranches =  env.getProperty('CheckOnlyBrancheNames')
     println 'CheckOnlyBrancheNames----'+CheckOnlyBranches
 
 
-    def HUB_ORG=env.HUB_ORG_DH
+    def HUB_ORG=env.getProperty("${projectFolderName1}"+'_User_Name')
     //def SFDC_HOST = env.SFDC_HOST_DH
-    def SFDC_HOST = env.getProperty("${projectFolderName}"+'_User_Name')
-    
-    def JWT_KEY_CRED_ID = env.JWT_CRED_ID_DH
-    def CONNECTED_APP_CONSUMER_KEY=env.CONNECTED_APP_CONSUMER_KEY_DH
+    def SFDC_HOST = env.getProperty("${projectFolderName1}"+'_Login_URL')
+    def JWT_KEY_CRED_ID = env.getProperty("${projectFolderName1}"+'_JWT_CRED_ID_DH');
+    def CONNECTED_APP_CONSUMER_KEY=env.getProperty("${projectFolderName1}"+'_CONNECTED_APP_CONSUMER_KEY');
 
     println 'KEY IS' 
     println JWT_KEY_CRED_ID
