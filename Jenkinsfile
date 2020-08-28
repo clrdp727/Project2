@@ -36,20 +36,14 @@ node {
     def foldername = getFolderName()
     print "Folder Name"
     print "${foldername}"
-
+    def folderActualName = foldername.split('\')
+    print "${folderActualName}"
 
 
     stage('checkout source') {
         // when running in multi-branch job, one must issue this command
         checkout scm
     }
-
-    def isValidation = bat (returnStdout: true, script: "git name-rev --name-only HEAD").trim().readLines()
-    println "-->>>>isValidation0-->>>"+isValidation[0]            
-    def projectInfo = isValidation[0].split('>')[0]
-    println("projectInfo-"+projectInfo)
-
-
 
     withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'jwt_key_file')]) {
         stage('Deploye Code') {
