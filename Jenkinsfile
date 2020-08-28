@@ -57,7 +57,7 @@ node {
 
 			println rc
 
-            def isValidation = (bat returnStdout: true, script: "git name-rev --name-only HEAD").trim().readLines().drop(1)
+            def isValidation = bat (returnStdout: true, script: "git name-rev --name-only HEAD").trim().readLines().drop(1)
             println "-->>>>isValidation-->>>"+isValidation
             if(isValidation!=''){
                 getBranches = isValidation.split('/')
