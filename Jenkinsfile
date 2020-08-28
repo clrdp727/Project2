@@ -31,6 +31,14 @@ node {
         checkout scm
     }
 
+    def isValidation = bat (returnStdout: true, script: "git name-rev --name-only HEAD").trim().readLines()
+    println "-->>>>isValidation0-->>>"+isValidation[0]            
+    println "-->>>>isValidation1-->>>"+isValidation[1]            
+//    projectInfo = isValidation[0].split('>')[0].split('\\')
+//    println("projectInfo-"+projectInfo)
+
+
+
     withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'jwt_key_file')]) {
         stage('Deploye Code') {
             if (isUnix()) {
@@ -59,10 +67,6 @@ node {
 
 			println rc
 
-            def isValidation = bat (returnStdout: true, script: "git name-rev --name-only HEAD").trim().readLines()
-            println "-->>>>isValidation-->>>"+isValidation            
-            projectInfo = isValidation[0].split('>')[0].split('\\')
-            println("projectInfo-"+projectInfo)
 
             if(isValidation!=''){
                 getBranches = isValidation[0].split('/')
