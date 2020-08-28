@@ -25,7 +25,7 @@ node {
     def CONNECTED_APP_CONSUMER_KEY=env.getProperty("${projectFolderName1}"+'_CONNECTED_APP_CONSUMER_KEY'); // to get the org consumer key 
     def checkonly = env.getProperty("${projectFolderName1}"+'_Checkonly'); // to get checkonly flag value
 
-    println "checkonly ${checkonly}"+
+    println ("checkonly"+checkonly)
 
     println 'KEY IS' 
     println JWT_KEY_CRED_ID
