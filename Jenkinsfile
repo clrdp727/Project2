@@ -11,8 +11,8 @@ node {
     def JWT_KEY_CRED_ID = env.JWT_CRED_ID_DH
     def CONNECTED_APP_CONSUMER_KEY=env.CONNECTED_APP_CONSUMER_KEY_DH
 
-    def test1 =  env.Dev1
-    println test1
+    def CheckOnlyBranches =  env.CheckOnlyBrancheNames
+    println CheckOnlyBranches
 
     def isCheckonly='false'
 
@@ -57,8 +57,17 @@ node {
 
 			println rc
 
-            def isValidation = bat returnStdout: true, script: "git name-rev --name-only HEAD"
+            def isValidation = (bat returnStdout: true, script: "git name-rev --name-only HEAD").trim().readLines().drop(1)
             println "-->>>>isValidation-->>>"+isValidation
+            if(isValidation!=''){
+                getBranches = isValidation.split('/')
+                 for(int  index=0; index<getBranches.size();i++){
+                     println "Branch-->>"+getBranches[index]
+                    if(getBranches[index]==CheckOnlyBranches){
+                        isCheckonly='true'
+                    }
+                 }
+            }
 
 			// need to pull out assigned username
 			if (isUnix()) {
