@@ -1,6 +1,7 @@
 #!groovy
 import groovy.json.JsonSlurperClassic
 
+    //Method to return the project directory name
     def getFolderName() {
         def array = pwd().split("/")
         def folderNameList = array[array.length - 2].split('\\\\')
@@ -15,19 +16,16 @@ node {
     def SFDC_USERNAME
 
     def projectFolderName1 = getFolderName()
-    print "Folder Name"
-    print "${projectFolderName1}"
-    print "Getting Environment Variable Details-----"
+    print "Project Directory Name--"+"${projectFolderName1}"
     
-    def CheckOnlyBranches =  env.getProperty('CheckOnlyBrancheNames')
-    println 'CheckOnlyBrancheNames----'+CheckOnlyBranches
+    //Fetching the project specific properties of the environment variables
+    def HUB_ORG=env.getProperty("${projectFolderName1}"+'_User_Name') // to get the username
+    def SFDC_HOST = env.getProperty("${projectFolderName1}"+'_Login_URL') // to get the salesforce login url
+    def JWT_KEY_CRED_ID = env.getProperty("${projectFolderName1}"+'_JWT_KEY_CRED_ID'); // to get the JWT Id
+    def CONNECTED_APP_CONSUMER_KEY=env.getProperty("${projectFolderName1}"+'_CONNECTED_APP_CONSUMER_KEY'); // to get the org consumer key 
+    def checkonly = env.getProperty("${projectFolderName1}"+'_Checkonly'); // to get checkonly flag value
 
-
-    def HUB_ORG=env.getProperty("${projectFolderName1}"+'_User_Name')
-    //def SFDC_HOST = env.SFDC_HOST_DH
-    def SFDC_HOST = env.getProperty("${projectFolderName1}"+'_Login_URL')
-    def JWT_KEY_CRED_ID = env.getProperty("${projectFolderName1}"+'_JWT_KEY_CRED_ID');
-    def CONNECTED_APP_CONSUMER_KEY=env.getProperty("${projectFolderName1}"+'_CONNECTED_APP_CONSUMER_KEY');
+    println "checkonly "+${checkonly}
 
     println 'KEY IS' 
     println JWT_KEY_CRED_ID
