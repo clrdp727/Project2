@@ -16,6 +16,7 @@ node {
 
     def isCheckonly='false'
     def branchName=''
+    def projectName=''
 
     println 'KEY IS' 
     println JWT_KEY_CRED_ID
@@ -58,10 +59,13 @@ node {
 
 			println rc
 
-            def isValidation = bat (returnStdout: true, script: "git name-rev --name-only HEAD").trim().readLines().drop(1)
-            println "-->>>>isValidation-->>>"+isValidation
+            def isValidation = bat (returnStdout: true, script: "git name-rev --name-only HEAD").trim().readLines()
+            println "-->>>>isValidation-->>>"+isValidation            
+            projectInfo = isValidation[0].split('>')[0].split('\\')
+            println("projectInfo-"+projectInfo)
+
             if(isValidation!=''){
-                getBranches = isValidation[0].split('/')
+                getBranches = isValidation[1].split('/')
                 branchName = getBranches[getBranches.size()-1]
                 println("branchName-"+branchName)
                 //  for(int  index=0; index<getBranches.size();index++){
