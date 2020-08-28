@@ -36,7 +36,7 @@ node {
     def foldername = getFolderName()
     print "Folder Name"
     print "${foldername}"
-    def folderActualName = foldername.split('\')
+    def folderActualName = "${foldername}".split('\\\\')
     print "${folderActualName}"
 
 
