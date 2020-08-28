@@ -57,7 +57,7 @@ node {
 
 			println rc
 
-            def isValidation = bat returnStdout: true, script: "git branch"
+            def isValidation = bat returnStdout: true, script: "git name-rev --name-only HEAD"
             println "-->>>>isValidation-->>>"+isValidation
 
 			// need to pull out assigned username
