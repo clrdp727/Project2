@@ -61,7 +61,7 @@ node {
             println "-->>>>isValidation-->>>"+isValidation
             if(isValidation!=''){
                 getBranches = isValidation[0].split('/')
-                 for(int  index=0; index<getBranches.size();i++){
+                 for(int  index=0; index<getBranches.size();index++){
                      println "Branch-->>"+getBranches[index]
                     if(getBranches[index]==CheckOnlyBranches){
                         isCheckonly='true'
