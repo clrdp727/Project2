@@ -37,7 +37,7 @@ node {
     print "Folder Name"
     print "${folderPath}"
     def folderNameList = "${folderPath}".split('\\\\')
-    def projectFolderName = folderNameList[folderNameList.size()-1]
+    def projectFolderName = folderNameList[folderNameList.size()-1].split('@')[0]
     print "${projectFolderName}"
 
 
