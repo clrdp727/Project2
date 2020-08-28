@@ -25,7 +25,7 @@ node {
     println CONNECTED_APP_CONSUMER_KEY
     def toolbelt = tool 'toolbelt'
 
-    println("Workspace"+${WORKSPACE})
+    println ${WORKSPACE}
 
 
     stage('checkout source') {
