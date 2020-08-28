@@ -74,19 +74,6 @@ node {
 
 			println rc
 
-
-            if(isValidation!=''){
-                getBranches = isValidation[0].split('/')
-                branchName = getBranches[getBranches.size()-1]
-                println("branchName-"+branchName)
-                //  for(int  index=0; index<getBranches.size();index++){
-                //      println "Branch-->>"+
-                //     if(getBranches[index]==CheckOnlyBranches){
-                //         isCheckonly='true'
-                //     }
-                //  }
-            }
-
 			// need to pull out assigned username
 			if (isUnix()) {
 				rmsg = sh returnStdout: true, script: "${toolbelt} force:mdapi:deploy -d manifest/. -u ${HUB_ORG}"
