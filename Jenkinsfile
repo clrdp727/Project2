@@ -15,6 +15,7 @@ node {
     println CheckOnlyBranches
 
     def isCheckonly='false'
+    def branchName=''
 
     println 'KEY IS' 
     println JWT_KEY_CRED_ID
@@ -61,12 +62,14 @@ node {
             println "-->>>>isValidation-->>>"+isValidation
             if(isValidation!=''){
                 getBranches = isValidation[0].split('/')
-                 for(int  index=0; index<getBranches.size();index++){
-                     println "Branch-->>"+getBranches[index]
-                    if(getBranches[index]==CheckOnlyBranches){
-                        isCheckonly='true'
-                    }
-                 }
+                branchName = getBranches[getBranches.size()-1]
+                println("branchName-"+branchName)
+                //  for(int  index=0; index<getBranches.size();index++){
+                //      println "Branch-->>"+
+                //     if(getBranches[index]==CheckOnlyBranches){
+                //         isCheckonly='true'
+                //     }
+                //  }
             }
 
 			// need to pull out assigned username
