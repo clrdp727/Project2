@@ -12,27 +12,6 @@ node {
     def RUN_ARTIFACT_DIR="tests/${BUILD_NUMBER}"
     def SFDC_USERNAME
 
-    def HUB_ORG=env.HUB_ORG_DH
-    def SFDC_HOST = env.SFDC_HOST_DH
-    def JWT_KEY_CRED_ID = env.JWT_CRED_ID_DH
-    def CONNECTED_APP_CONSUMER_KEY=env.CONNECTED_APP_CONSUMER_KEY_DH
-
-    def CheckOnlyBranches =  env.getProperty('CheckOnlyBrancheNames')
-    println 'CheckOnlyBrancheNames----'+CheckOnlyBranches
-
-    def isCheckonly='false'
-    def branchName=''
-    def projectName=''
-
-    println 'KEY IS' 
-    println JWT_KEY_CRED_ID
-    println HUB_ORG
-    println SFDC_HOST
-    println CONNECTED_APP_CONSUMER_KEY
-    def toolbelt = tool 'toolbelt'
-
-
-
     def folderPath = getFolderName()
     print "Folder Name"
     print "${folderPath}"
@@ -40,8 +19,24 @@ node {
     def projectFolderName = folderNameList[folderNameList.size()-1].split('@')[0]
     print "${projectFolderName}"
     print "Getting Environment Variable Details-----"
+    
+    def CheckOnlyBranches =  env.getProperty('CheckOnlyBrancheNames')
+    println 'CheckOnlyBrancheNames----'+CheckOnlyBranches
 
 
+    def HUB_ORG=env.HUB_ORG_DH
+    //def SFDC_HOST = env.SFDC_HOST_DH
+    def SFDC_HOST = env.getProperty("${projectFolderName}"+'_User_Name')
+    
+    def JWT_KEY_CRED_ID = env.JWT_CRED_ID_DH
+    def CONNECTED_APP_CONSUMER_KEY=env.CONNECTED_APP_CONSUMER_KEY_DH
+
+    println 'KEY IS' 
+    println JWT_KEY_CRED_ID
+    println HUB_ORG
+    println SFDC_HOST
+    println CONNECTED_APP_CONSUMER_KEY
+    def toolbelt = tool 'toolbelt'
 
     stage('checkout source') {
         // when running in multi-branch job, one must issue this command
