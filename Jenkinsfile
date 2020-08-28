@@ -16,7 +16,6 @@ node {
 
     def projectFolderName1 = getFolderName()
     print "Folder Name"
-    print "${folderPath}"
     print "${projectFolderName1}"
     print "Getting Environment Variable Details-----"
     
