@@ -33,11 +33,12 @@ node {
 
 
 
-    def foldername = getFolderName()
+    def folderPath = getFolderName()
     print "Folder Name"
-    print "${foldername}"
-    def folderActualName = "${foldername}".split('\\\\')
-    print "${folderActualName}"
+    print "${folderPath}"
+    def folderNameList = "${folderPath}".split('\\\\')
+    def projectFolderName = folderNameList[folderNameList.size()-1]
+    print "${projectFolderName}"
 
 
     stage('checkout source') {
