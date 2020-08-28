@@ -65,7 +65,7 @@ node {
             println("projectInfo-"+projectInfo)
 
             if(isValidation!=''){
-                getBranches = isValidation[1].split('/')
+                getBranches = isValidation[0].split('/')
                 branchName = getBranches[getBranches.size()-1]
                 println("branchName-"+branchName)
                 //  for(int  index=0; index<getBranches.size();index++){
