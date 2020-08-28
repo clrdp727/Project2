@@ -26,7 +26,7 @@ node {
     def HUB_ORG=env.getProperty("${projectFolderName1}"+'_User_Name')
     //def SFDC_HOST = env.SFDC_HOST_DH
     def SFDC_HOST = env.getProperty("${projectFolderName1}"+'_Login_URL')
-    def JWT_KEY_CRED_ID = env.getProperty("${projectFolderName1}"+'_JWT_CRED_ID_DH');
+    def JWT_KEY_CRED_ID = env.getProperty("${projectFolderName1}"+'_JWT_KEY_CRED_ID');
     def CONNECTED_APP_CONSUMER_KEY=env.getProperty("${projectFolderName1}"+'_CONNECTED_APP_CONSUMER_KEY');
 
     println 'KEY IS' 
