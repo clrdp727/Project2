@@ -17,7 +17,7 @@ node {
     def JWT_KEY_CRED_ID = env.JWT_CRED_ID_DH
     def CONNECTED_APP_CONSUMER_KEY=env.CONNECTED_APP_CONSUMER_KEY_DH
 
-    def CheckOnlyBranches =  environment('CheckOnlyBrancheNames')
+    def CheckOnlyBranches =  env.get('CheckOnlyBrancheNames')
     println 'CheckOnlyBrancheNames----'+CheckOnlyBranches
 
     def isCheckonly='false'
