@@ -28,6 +28,17 @@ node {
     println ${workspace}
 
 
+    def getFolderName() {
+        def array = pwd().split("/")
+        return array[array.length - 2];
+    }
+
+    def foldername = getFolderName()
+    print "Folder Name"
+    print "${foldername}"
+
+
+
     stage('checkout source') {
         // when running in multi-branch job, one must issue this command
         checkout scm
