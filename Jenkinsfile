@@ -33,9 +33,8 @@ node {
 
     def isValidation = bat (returnStdout: true, script: "git name-rev --name-only HEAD").trim().readLines()
     println "-->>>>isValidation0-->>>"+isValidation[0]            
-    println "-->>>>isValidation1-->>>"+isValidation[1]            
-//    projectInfo = isValidation[0].split('>')[0].split('\\')
-//    println("projectInfo-"+projectInfo)
+    def projectInfo = isValidation[0].split('>')
+    println("projectInfo-"+projectInfo)
 
 
 
