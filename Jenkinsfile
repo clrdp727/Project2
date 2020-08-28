@@ -14,6 +14,8 @@ node {
     def test1 =  env.Dev1
     println test1
 
+    def isCheckonly='false'
+
     println 'KEY IS' 
     println JWT_KEY_CRED_ID
     println HUB_ORG
@@ -32,36 +34,32 @@ node {
             if (isUnix()) {
                 rc = sh returnStatus: true, script: "${toolbelt} force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"
             }else{
-                 rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile \"${jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"		    
-                 def rc2 = bat (returnStdout: true, script: "git diff --name-only HEAD HEAD~1").trim()
-		    
-//		    println '***'
-//		    println("################ " + rc2 + " ####################")
-		    result = rc2.readLines().drop(1)
-		  //  println( result)
-		    def folderString
-		    for(int  i=0; i<result.size();i++){
-			    folderString=''
-		    	println("Res"+i+"->"+result[i])
-			splittedParts = result[i].split('/')
-			echo splittedParts[splittedParts.size()-1]
-		    	for(int j=0; j<splittedParts.size()-1;j++){
-			    folderString=folderString+splittedParts[j]+"\\"
-		    	}
-			echo folderString
-		        rc3 = bat returnStatus: true, script: "mkdir C:\\deploy-cmp\\${folderString}"
-		        correctstring = result[i].split('/').join('\\');
-		    	rc4 = bat returnStatus: true, script: "copy ${correctstring} C:\\deploy-cmp\\${folderString}"
-		    	rc5 = bat returnStatus: true, script: "copy ${correctstring}-meta.xml C:\\deploy-cmp\\${folderString}"			    
-		    }
-		    
-//		    println '***'
-//		    rc3 = bat returnStatus: true, script: "mkdir C:/deploy-cmp/${result}"
+                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile \"${jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"		    
+                def rc2 = bat (returnStdout: true, script: "git diff --name-only HEAD HEAD~1").trim()
+                result = rc2.readLines().drop(1)
+                def folderString
+                for(int  i=0; i<result.size();i++){
+                    folderString=''
+                    println("Res"+i+"->"+result[i])
+                    splittedParts = result[i].split('/')
+                    echo splittedParts[splittedParts.size()-1]
+                    for(int j=0; j<splittedParts.size()-1;j++){
+                        folderString=folderString+splittedParts[j]+"\\"
+                    }
+                    echo folderString
+                    rc3 = bat returnStatus: true, script: "mkdir C:\\deploy-cmp\\${folderString}"
+                    correctstring = result[i].split('/').join('\\');
+                    rc4 = bat returnStatus: true, script: "copy ${correctstring} C:\\deploy-cmp\\${folderString}"
+                    rc5 = bat returnStatus: true, script: "copy ${correctstring}-meta.xml C:\\deploy-cmp\\${folderString}"			    
+                }
             }
             if (rc != 0) { error 'hub org authorization failed' }
 
 			println rc
-			
+
+            def isValidation = bat (returnStdout: true, script: "git branch --show-current").trim()
+            println "-->>>>isValidation-->>>"+isValidation
+
 			// need to pull out assigned username
 			if (isUnix()) {
 				rmsg = sh returnStdout: true, script: "${toolbelt} force:mdapi:deploy -d manifest/. -u ${HUB_ORG}"
