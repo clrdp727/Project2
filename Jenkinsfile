@@ -1,5 +1,11 @@
 #!groovy
 import groovy.json.JsonSlurperClassic
+
+    def getFolderName() {
+        def array = pwd().split("/")
+        return array[array.length - 2];
+    }
+
 node {
 
     def BUILD_NUMBER=env.BUILD_NUMBER
@@ -26,10 +32,6 @@ node {
     def toolbelt = tool 'toolbelt'
 
 
-    def getFolderName() {
-        def array = pwd().split("/")
-        return array[array.length - 2];
-    }
 
     def foldername = getFolderName()
     print "Folder Name"
