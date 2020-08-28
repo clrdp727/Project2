@@ -57,20 +57,17 @@ node {
 
 			println rc
 
-            def isValidation = bat (returnStdout: true, script: "git branch --show-current").trim()
+            def isValidation = bat returnStdout: true, script: "git branch"
             println "-->>>>isValidation-->>>"+isValidation
 
 			// need to pull out assigned username
 			if (isUnix()) {
 				rmsg = sh returnStdout: true, script: "${toolbelt} force:mdapi:deploy -d manifest/. -u ${HUB_ORG}"
 			}else{
-//			   rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy --sourcepath ./force-app/main/default/"
-				
 			   rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy -u ${HUB_ORG} --sourcepath C:\\deploy-cmp\\force-app\\main\\default\\"
                def commitDetail = bat (returnStdout: true, script: "git log --oneline -n 1").trim().readLines().drop(1)
                println("commitDetail-"+commitDetail+"--------");
                rmsg2 = bat returnStdout: true, script: "\"${toolbelt}\" force:data:record:create -u ${HUB_ORG} -s Deployment_Status__c -v \"Description__c='${commitDetail}'\""
-//			   rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy --sourcepath C:/deploy-cmp/force-app/main/default/"
 			}
 			  
             printf rmsg
