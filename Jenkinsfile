@@ -64,35 +64,36 @@ node {
                 }
             }
             if (rc != 0) { error 'hub org authorization failed' }
-
 			println rc
 
-			// need to pull out assigned username
-			if (isUnix()) {
-				rmsg = sh returnStdout: true, script: "${toolbelt} force:mdapi:deploy -d manifest/. -u ${HUB_ORG}"
+			if (checkonly=='true') {
+			   rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy --checkonly -u ${HUB_ORG} --sourcepath C:\\deploy-cmp\\force-app\\main\\default\\"
 			}else{
-			   rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy -u ${HUB_ORG} --sourcepath C:\\deploy-cmp\\force-app\\main\\default\\"
-               def commitDetail = bat (returnStdout: true, script: "git log --oneline -n 1").trim().readLines().drop(1)
-               println("commitDetail-"+commitDetail+"--------");
-               rmsg2 = bat returnStdout: true, script: "\"${toolbelt}\" force:data:record:create -u ${HUB_ORG} -s Deployment_Status__c -v \"Description__c='${commitDetail}'\""
+                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy -u ${HUB_ORG} --sourcepath C:\\deploy-cmp\\force-app\\main\\default\\"
+                def commitDetail = bat (returnStdout: true, script: "git log --oneline -n 1").trim().readLines().drop(1)
+                println("commitDetail-"+commitDetail+"--------");
+                rmsg2 = bat returnStdout: true, script: "\"${toolbelt}\" force:data:record:create -u ${HUB_ORG} -s Deployment_Status__c -v \"Description__c='${commitDetail}'\""
+                printf rmsg
+
+                println('Deployment is Finished Successfully three!!')
+                println(rmsg)
+                rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp"			    
+                rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp & rmdir /Q /S force-app"			    
+
+                //For Managing Destructive Changes
+                try {
+                    installSfPowerkit = bat returnStdout: true, script: "\"${toolbelt}\" plugins:install sfpowerkit"
+                    createXML = bat returnStdout: true, script: "\"${toolbelt}\" sfpowerkit:project:diff -r HEAD~1 -d  ..\\sfpowerkitDiff -x --loglevel trace"
+                    copyXML = bat returnStdout: true, script: "copy ..\\sfpowerkitDiff\\destructiveChanges.xml ..\\sfpowerkitDeploy\\"
+                    mdapiDeploy = bat returnStdout: true, script: "\"${toolbelt}\" force:mdapi:deploy -d ..\\sfpowerkitDeploy\\ -w 30 -u  ${HUB_ORG} --loglevel trace"
+                    cleanDestructiveXML = bat returnStatus: true, script: "cd ..\\sfpowerkitDeploy & del destructiveChanges.xml"			    
+                }catch(ex){
+
+                }
+
+
 			}
 			  
-            printf rmsg
-            println('Deployment is Finished Successfully three!!')
-            println(rmsg)
-            rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp"			    
-            rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp & rmdir /Q /S force-app"			    
-
-            // Destructive Changes
-            try {
-                installSfPowerkit = bat returnStdout: true, script: "\"${toolbelt}\" plugins:install sfpowerkit"
-                createXML = bat returnStdout: true, script: "\"${toolbelt}\" sfpowerkit:project:diff -r HEAD~1 -d  ..\\sfpowerkitDiff -x --loglevel trace"
-                copyXML = bat returnStdout: true, script: "copy ..\\sfpowerkitDiff\\destructiveChanges.xml ..\\sfpowerkitDeploy\\"
-                mdapiDeploy = bat returnStdout: true, script: "\"${toolbelt}\" force:mdapi:deploy -d ..\\sfpowerkitDeploy\\ -w 30 -u  ${HUB_ORG} --loglevel trace"
-                cleanDestructiveXML = bat returnStatus: true, script: "cd ..\\sfpowerkitDeploy & del destructiveChanges.xml"			    
-            }catch(ex){
-
-            }
         }
     }
 }
