@@ -25,8 +25,6 @@ node {
     println CONNECTED_APP_CONSUMER_KEY
     def toolbelt = tool 'toolbelt'
 
-    println ${workspace}
-
 
     def getFolderName() {
         def array = pwd().split("/")
