@@ -41,54 +41,34 @@ node {
 
     withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'jwt_key_file')]) {
         stage('Deploye Code') {
-            if (isUnix()) {
-                rc = sh returnStatus: true, script: "${toolbelt} force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"
-            }else{
-                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile \"${jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"		    
-                // def rc2 = bat (returnStdout: true, script: "git diff --name-only HEAD HEAD~1").trim()
-                // result = rc2.readLines().drop(1)
-                // def folderString
-                // for(int  i=0; i<result.size();i++){
-                //     folderString=''
-                //     println("Res"+i+"->"+result[i])
-                //     splittedParts = result[i].split('/')
-                //     echo splittedParts[splittedParts.size()-1]
-                //     for(int j=0; j<splittedParts.size()-1;j++){
-                //         folderString=folderString+splittedParts[j]+"\\"
-                //     }
-                //     echo folderString
-                //     rc3 = bat returnStatus: true, script: "mkdir C:\\deploy-cmp\\${folderString}"
-                //     correctstring = result[i].split('/').join('\\');
-                //     rc4 = bat returnStatus: true, script: "copy ${correctstring} C:\\deploy-cmp\\${folderString}"
-                //     rc5 = bat returnStatus: true, script: "copy ${correctstring}-meta.xml C:\\deploy-cmp\\${folderString}"			    
-                // }
-            }
+            rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile \"${jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"		    
+
             if (rc != 0) { error 'hub org authorization failed' }
 			println rc
 
             installSfPowerkit = bat returnStdout: true, script: "\"${toolbelt}\" plugins:install sfpowerkit"
-            createXML = bat returnStdout: true, script: "\"${toolbelt}\" sfpowerkit:project:diff -r HEAD~1 -d  C:\\deploy-cmp2 -x --loglevel trace"
+            createXML = bat returnStdout: true, script: "\"${toolbelt}\" sfpowerkit:project:diff -r HEAD~1 -d  C:\\deploy-cmp2${projectFolderName1} -x --loglevel trace"
 
 			if (checkonly=='true') {
                println '******************************Validation Process Starts******************************' 
-			   rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy --checkonly -u ${HUB_ORG} --sourcepath C:\\deploy-cmp2\\force-app\\main\\default\\"
+			   rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy --checkonly -u ${HUB_ORG} --sourcepath C:\\deploy-cmp2${projectFolderName1}\\force-app\\main\\default\\"
                rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp2"			    
                rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp2 & rmdir /Q /S force-app"			    
                println '******************************Validation Process Ends******************************' 
 			}else{
                 println '******************************Main Deployment Begins******************************' 
-                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy -u ${HUB_ORG} --sourcepath C:\\deploy-cmp\\force-app\\main\\default\\"
+                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy -u ${HUB_ORG} --sourcepath C:\\deploy-cmp2${projectFolderName1}\\force-app\\main\\default\\"
                 println '******************************Main Deployment Ends******************************' 
 
                 println '******************************To Track the Deployment Status******************************' 
-                def commitDetail = bat (returnStdout: true, script: "git log --oneline -n 1").trim().readLines().drop(1)
-                println("commitDetail-"+commitDetail+"--------");
-                rmsg2 = bat returnStdout: true, script: "\"${toolbelt}\" force:data:record:create -u ${HUB_ORG} -s Deployment_Status__c -v \"Description__c='${commitDetail}'\""
-                printf rmsg
+                // def commitDetail = bat (returnStdout: true, script: "git log --oneline -n 1").trim().readLines().drop(1)
+                // println("commitDetail-"+commitDetail+"--------");
+                // rmsg2 = bat returnStdout: true, script: "\"${toolbelt}\" force:data:record:create -u ${HUB_ORG} -s Deployment_Status__c -v \"Description__c='${commitDetail}'\""
+                // printf rmsg
                 println '******************************Deployment is Finished Successfully!!******************************' 
 
-                rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp2"			    
-                rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp2 & rmdir /Q /S force-app"			    
+                rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp2${projectFolderName1}"			    
+                rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp2${projectFolderName1} & rmdir /Q /S force-app"			    
 
                 //For Managing Destructive Changes
                 try {
