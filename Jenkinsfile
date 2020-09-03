@@ -69,6 +69,8 @@ node {
 			if (checkonly=='true') {
                println '******************************Validation Process Starts******************************' 
 			   rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy --checkonly -u ${HUB_ORG} --sourcepath C:\\deploy-cmp\\force-app\\main\\default\\"
+               rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp"			    
+               rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp & rmdir /Q /S force-app"			    
                println '******************************Validation Process Ends******************************' 
 			}else{
                 println '******************************Main Deployment Begins******************************' 
