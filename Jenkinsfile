@@ -68,7 +68,7 @@ node {
 
 			if (checkonly=='true') {
                installSfPowerkit = bat returnStdout: true, script: "\"${toolbelt}\" plugins:install sfpowerkit"
-               createXML = bat returnStdout: true, script: "\"${toolbelt}\" sfpowerkit:project:diff -r HEAD~1 -d  C:\\deploy-cmp -x --loglevel trace"
+               createXML = bat returnStdout: true, script: "\"${toolbelt}\" sfpowerkit:project:diff -r HEAD~1 -d  C:\\deploy-cmp2 -x --loglevel trace"
 
                println '******************************Validation Process Starts******************************' 
 			   rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy --checkonly -u ${HUB_ORG} --sourcepath C:\\deploy-cmp\\force-app\\main\\default\\"
