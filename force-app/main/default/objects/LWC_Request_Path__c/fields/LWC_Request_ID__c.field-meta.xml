@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LWC_Request_ID__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This field will store the reference to parent request</description>
+    <externalId>false</externalId>
+    <label>Request ID</label>
+    <referenceTo>LWC_Request__c</referenceTo>
+    <relationshipLabel>Request Path</relationshipLabel>
+    <relationshipName>LWC_Request_Path</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
