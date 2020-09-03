@@ -66,11 +66,14 @@ node {
             if (rc != 0) { error 'hub org authorization failed' }
 			println rc
 
+            installSfPowerkit = bat returnStdout: true, script: "\"${toolbelt}\" plugins:install sfpowerkit"
+            createXML = bat returnStdout: true, script: "\"${toolbelt}\" sfpowerkit:project:diff -r HEAD~1 -d  C:\\deploy-cmp2 -x --loglevel trace"
+
 			if (checkonly=='true') {
                println '******************************Validation Process Starts******************************' 
-			   rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy --checkonly -u ${HUB_ORG} --sourcepath C:\\deploy-cmp\\force-app\\main\\default\\"
-               rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp"			    
-               rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp & rmdir /Q /S force-app"			    
+			   rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy --checkonly -u ${HUB_ORG} --sourcepath C:\\deploy-cmp2\\force-app\\main\\default\\"
+               rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp2"			    
+               rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp2 & rmdir /Q /S force-app"			    
                println '******************************Validation Process Ends******************************' 
 			}else{
                 println '******************************Main Deployment Begins******************************' 
@@ -84,13 +87,12 @@ node {
                 printf rmsg
                 println '******************************Deployment is Finished Successfully!!******************************' 
 
-                rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp"			    
-                rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp & rmdir /Q /S force-app"			    
+                rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp2"			    
+                rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp2 & rmdir /Q /S force-app"			    
 
                 //For Managing Destructive Changes
                 try {
                     println '******************************Checking the Destructive Changes******************************' 
-                    installSfPowerkit = bat returnStdout: true, script: "\"${toolbelt}\" plugins:install sfpowerkit"
                     createXML = bat returnStdout: true, script: "\"${toolbelt}\" sfpowerkit:project:diff -r HEAD~1 -d  ..\\sfpowerkitDiff -x --loglevel trace"
                     copyXML = bat returnStdout: true, script: "copy ..\\sfpowerkitDiff\\destructiveChanges.xml ..\\sfpowerkitDeploy\\"
                     mdapiDeploy = bat returnStdout: true, script: "\"${toolbelt}\" force:mdapi:deploy -d ..\\sfpowerkitDeploy\\ -w 30 -u  ${HUB_ORG} --loglevel trace"
