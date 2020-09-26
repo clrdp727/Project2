@@ -58,6 +58,7 @@ node {
 			}else{
                 println '******************************Main Deployment Begins******************************' 
                 rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy -u ${HUB_ORG} --sourcepath C:\\deploy-cmp2${projectFolderName1}\\force-app\\main\\default\\"
+                println rmsg
                 println '******************************Main Deployment Ends******************************' 
 
                 println '******************************To Track the Deployment Status******************************' 
