@@ -67,8 +67,8 @@ node {
                 // printf rmsg
                 println '******************************Deployment is Finished Successfully!!******************************' 
 
-                rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp2${projectFolderName1}"			    
-                rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp2${projectFolderName1} & rmdir /Q /S force-app"			    
+              //  rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp2${projectFolderName1}"			    
+              //  rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp2${projectFolderName1} & rmdir /Q /S force-app"			    
 
                 //For Managing Destructive Changes
                 try {
