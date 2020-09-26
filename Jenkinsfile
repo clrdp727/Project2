@@ -57,7 +57,7 @@ node {
                println '******************************Validation Process Ends******************************' 
 			}else{
                 println '******************************Main Deployment Begins******************************' 
-                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy -u ${HUB_ORG} --sourcepath C:\\deploy-cmp2${projectFolderName1}\\force-app\\main\\default\\"
+                rmsg = bat returnStdout: true, script: "cd C:\\deploy-cmp2${projectFolderName1} & sfdx force:source:deploy -u ${HUB_ORG} --sourcepath C:\\deploy-cmp2${projectFolderName1}\\force-app\\main\\default\\"
                 println rmsg
                 println '******************************Main Deployment Ends******************************' 
 
