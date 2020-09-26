@@ -46,18 +46,19 @@ node {
             if (rc != 0) { error 'hub org authorization failed' }
 			println rc
 
-            installSfPowerkit = bat returnStdout: true, script: "\"${toolbelt}\" plugins:install sfpowerkit"
+//            installSfPowerkit = bat returnStdout: true, script: "\"${toolbelt}\" plugins:install sfpowerkit"
             createXML = bat returnStdout: true, script: "\"${toolbelt}\" sfpowerkit:project:diff -r HEAD~1 -d  C:\\deploy-cmp2${projectFolderName1} -x --loglevel trace"
 
 			if (checkonly=='true') {
                println '******************************Validation Process Starts******************************' 
-			   rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy --checkonly -u ${HUB_ORG} --sourcepath C:\\deploy-cmp2${projectFolderName1}\\force-app\\main\\default\\"
+			   rmsg = bat returnStdout: true, script: "cd C:\\deploy-cmp2${projectFolderName1} & sfdx  force:source:deploy --checkonly -u ${HUB_ORG} --sourcepath C:\\deploy-cmp2${projectFolderName1}\\force-app\\main\\default\\"
                rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp2${projectFolderName1}"			    
                rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp2${projectFolderName1} & rmdir /Q /S force-app"			    
                println '******************************Validation Process Ends******************************' 
 			}else{
                 println '******************************Main Deployment Begins******************************' 
-                rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:source:deploy -u ${HUB_ORG} --sourcepath C:\\deploy-cmp2${projectFolderName1}\\force-app\\main\\default\\"
+                rmsg = bat returnStdout: true, script: "cd C:\\deploy-cmp2${projectFolderName1} & sfdx force:source:deploy -u ${HUB_ORG} --sourcepath C:\\deploy-cmp2${projectFolderName1}\\force-app\\main\\default\\"
+                println rmsg
                 println '******************************Main Deployment Ends******************************' 
 
                 println '******************************To Track the Deployment Status******************************' 
@@ -67,7 +68,7 @@ node {
                 // printf rmsg
                 println '******************************Deployment is Finished Successfully!!******************************' 
 
-                rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp2${projectFolderName1}"			    
+              //  rc5 = bat returnStatus: true, script: "cd C:\\deploy-cmp2${projectFolderName1}"			    
                 rc6 = bat returnStatus: true, script: "cd C:\\deploy-cmp2${projectFolderName1} & rmdir /Q /S force-app"			    
 
                 //For Managing Destructive Changes
