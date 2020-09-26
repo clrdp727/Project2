@@ -46,7 +46,7 @@ node {
             if (rc != 0) { error 'hub org authorization failed' }
 			println rc
 
-            installSfPowerkit = bat returnStdout: true, script: "\"${toolbelt}\" plugins:install sfpowerkit"
+//            installSfPowerkit = bat returnStdout: true, script: "\"${toolbelt}\" plugins:install sfpowerkit"
             createXML = bat returnStdout: true, script: "\"${toolbelt}\" sfpowerkit:project:diff -r HEAD~1 -d  C:\\deploy-cmp2${projectFolderName1} -x --loglevel trace"
 
 			if (checkonly=='true') {
